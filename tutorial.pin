@@ -432,6 +432,8 @@ Create a route displaying all person
 objects in the Midgard database
 --
 MidCOM components inside Symfony2
+-- [transition=spin-text]
+<b>Warning:</b> Here be Dragons
 -- [black]
 Add Midgard MidcomCompatBundle as dependency
 

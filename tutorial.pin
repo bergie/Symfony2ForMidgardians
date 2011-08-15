@@ -1,0 +1,426 @@
+#!/usr/bin/env pinpoint
+
+[fill]
+[jeremyhiebert-okanagan-symphony.jpg]
+[font=Cantarell 50px]
+[duration=10.000000]
+--
+Symfony2 for Midgard Developers
+
+-- [text-align=center]
+Symfony2 is becoming the 
+de-facto web framework for PHP 5.3
+-- [sf2-drupal.png] [fit]
+Drupal
+-- [sf2-zf.png] [fit]
+Zend Framework
+-- [symfony2-midgardmvc.png] [fit]
+Midgard MVC
+-- [symfony2-midcom.png] [fit]
+MidCOM
+-- [together.jpg] [fit] [bottom]
+The PHP world is starting to unite around Symfony2
+-- [sf2-bundles-appstore.png] [fit]
+
+-- [sf2-bundles-midgard.png] [fit]
+
+-- [sf2-contributors.png] [fit]
+
+-- [black]
+<b>Under MIT License</b>
+Copyright (c) 2004-2011 Fabien Potencier
+Permission is hereby granted, free of charge, to any person 
+obtaining a copy of this software and associated documentation 
+files (the "Software"), to deal in the Software without 
+restriction, including without limitation the rights to use, 
+copy, modify, merge, publish, distribute, sublicense, and/or 
+sell copies of the Software, and to permit persons to whom 
+the Software is furnished to do so, subject to the following
+conditions:
+The above copyright notice and this permission notice shall 
+be included in all copies or substantial portions of the 
+Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY 
+KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE 
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE 
+AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT 
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+
+--
+Symfony 2.0 was released on July 28 2011
+
+-- [sf2-release-plan.png] [fit]
+
+--
+Symfony2 is a collection of standalone PHP components
+bundled together into a single framework
+--
+You can choose what to take, and what to not use
+--
+✔ Authentication and Authorization
+✔ Forms and Validation
+✔ Templating
+✔ Logging
+✔ Asset Management
+✔ Routing
+✔ Internationalization
+✔ Console Tasks
+✔ Caching
+-- [sf2-dependency-injection.png]
+Dependency Injection means you can change
+any of these to another implementation
+-- [black] [no-markup]
+  <?php
+  $this->container->get('security.context')->isGranted(
+    'READ', $object)
+
+The actual service checking this could be
+MidCOM-style ACL, or simple "allow authenticated
+users to do anything" check.
+
+--
+PHP 5.3 and namespaces
+
+-- [black] [no-markup]
+Symfony2
+
+  <?php
+  namespace Example\\MyBundle\\Controller;
+  use Symfony\\Framework\\WebBundle\\Controller;
+  class SomeController extends Controller
+  {
+
+Midgard MVC & MidCOM
+
+  <?php
+  class example_mycomponent_controllers_some
+  {
+-- [black]
+\\ is the new _
+-- [psr-0.png] [fit]
+With namespaces all projects can share one autoloader.
+-- [black] [no-markup]
+
+  <?php
+  $crRoot = realpath(__DIR__ . '/..');
+
+  // register the autoloaders
+  require "{$crRoot}/SplClassLoader.php";
+
+  // Tell where Midgard stuff is
+  $midgardAutoloader = new SplClassLoader('Midgard', "{$crRoot}/src");
+  $midgardAutoloader->register();
+
+  // Tell where code from some other project is
+  $phpcrAutoloader = new SplClassLoader('PHPCR', "{$crRoot}/lib/PHPCR/src");
+  $phpcrAutoloader->register();
+
+--
+Time to get the hands dirty
+
+--
+Symfony2 Standard Edition
+-- [sf2-standard-edition.png] [fit] [bottom]
+
+http://symfony.com/download
+
+-- [sf2-standard-edition-unpacked.png]
+
+-- [black] [font=monospace]
+ $ php app/check.php 
+ ********************************
+ *                              *
+ *  Symfony requirements check  *
+ *                              *
+ ********************************
+
+ php.ini used by PHP: /etc/php5/cli/php.ini
+
+ ** Mandatory requirements **
+
+ OK        Checking that PHP version is at least 5.3.2 (5.3.5-1ubuntu7.2 installed)
+ OK        Checking that the "date.timezone" setting is set
+ OK        Checking that app/cache/ directory is writable
+ ...
+
+-- [black]
+Dependencies are defined in the <i>deps</i> file
+
+ [AsseticBundle]
+     git=http://github.com/symfony/AsseticBundle.git
+     target=/bundles/Symfony/Bundle/AsseticBundle
+     version=v1.0.0RC2
+--
+Now you could just use the <i>web</i> dir
+stuff in your regular web server.
+-- [black]
+However, we'll be using AppServer-in-PHP
+
+ $ pear channel-discover pear.indeyets.pp.ru
+ $ pear install indeyets/aip
+-- [black]
+Add AiP integration as dependency
+
+ [AppServerBundle]
+     git=http://github.com/bergie/MidgardAppServerBundle.git
+     target=Midgard/AppServerBundle
+
+Install with <i>$ php bin/vendors install --reinstall</i>
+--
+Copy <i>aip.yaml.example</i> from
+<i>vendor/Midgard/AppServerBundle</i>
+to the <i>app</i> dir as <i>aip.yaml</i>
+-- [black]
+Add Midgard namespace to autoloader
+
+ $loader->registerNamespaces(array(
+     ...
+     'Midgard'          => __DIR__.'/../vendor',
+-- [sf2-welcome.png] [fit] [bottom]
+Start AiP <i>aip app app/aip.yaml</i>
+Go to <i>http://localhost:8001</i>
+
+-- 
+Now, to write some code!
+
+ $ php app/console generate:bundle
+
+Let Symfony2 create a <i>Acme/ExampleBundle</i> for you.
+-- [sf2-examplebundle.png] [fit] [bottom]
+src/Acme/ExampleBundle
+
+-- [sf2-helloworld.png] [fit] [bottom]
+http://localhost:8001/hello/World
+
+-- [black] [no-markup]
+src/Acme/ExampleBundle/Controller/DefaultController.php
+
+ <?php
+ namespace Acme\\ExampleBundle\\Controller;
+ use Symfony\\Bundle\\FrameworkBundle\\Controller\\Controller;
+ use Sensio\\Bundle\\FrameworkExtraBundle\\Configuration\\Route;
+ use Sensio\\Bundle\\FrameworkExtraBundle\\Configuration\\Template;
+ class DefaultController extends Controller
+ {
+     /**
+      * @Route("/hello/{name}")
+      * @Template()
+      */
+     public function indexAction($name)
+     {
+         return array('name' => $name);
+     }
+ }
+
+-- [black]
+src/Acme/ExampleBundle/Resources/views/Default/index.html.twig
+
+ Hello {{ name }}!
+
+-- [black]
+How did this template get loaded?
+
+ /**
+  * @Template()
+  */
+ ...
+ return array('name' => $name);
+
+⇒ Defaults to <i>Bundle</i>/Resources/views/<i>Controller</i>/<i>action</i>.html.twig
+
+We could also do:
+
+ return $this->render(
+     'AcmeExampleBundle:Default:index.html.twig',
+     array('name' => $name)
+ );
+
+--
+Page generation process:
+
+1. Match the URL to a route (/hello/{name})
+    /hello/World ⇒ /hello/{name}
+2. Instantiate Controller
+    new Acme\\ExampleBundle\\Controller\\DefaultController
+3. Run action method with arguments
+    ->indexAction('World')
+3. Controller returns a Response
+    Hello World!
+
+--
+Templating in Symfony2
+
+-- [sf2-twig.png] [fit] [bottom]
+Twig is the default templating engine for Symfony2
+
+-- [templating-midgard.png] [fit]
+
+-- [templating-twig.png] [fit]
+
+--
+In Midgard you only define the elements you want to override
+
+In Twig you define a new root element that inherits and then
+overrides.
+
+-- [black]
+src/Acme/ExampleBundle/Resources/views/Default/index.html.twig
+
+ {% extends 'AcmeDemoBundle::layout.html.twig' %}
+
+ {% block content %}
+ Hello {{ name }}!
+ {% endblock %}
+
+-- [sf2-helloworld-templated.png] [fit] [bottom]
+http://localhost:8001/hello/World
+
+--
+You can also use other templating engines
+TAL, PHP, MidCOM, ...
+
+http://symfony.com/doc/2.0/cookbook/templating/PHP.html
+
+--
+Routing in Symfony2
+
+-- [black]
+Registering routes with PHP
+
+app/config/routing.yml
+
+ AcmeExampleBundle:
+     resource: "@AcmeExampleBundle/Controller/"
+     type:     annotation
+     prefix:   /
+
+In Controller action methods:
+
+ /**
+  * @Route("/hello/{name}")
+  */
+-- [black]
+Registering routes with YAML
+
+ AcmeExampleBundle:
+     resource: "@AcmeExampleBundle/Resources/config/routing.yml"
+     prefix: /example
+
+src/Acme/ExampleBundle/Resources/config/routing.yml
+
+ hello_user:
+     pattern: /hello/{name}
+     defaults: { _controller: AcmeExampleBundle:Default:index}
+
+(format is NamespaceBundle:Controller:action)
+-- [black] [font=monospace]
+ $ php app/console router:debug
+
+ [router] Current routes
+ Name                       Method Pattern
+ _welcome                   ANY    /
+ _demo_login                ANY    /demo/secured/login
+ _security_check            ANY    /demo/secured/login_check
+ _demo_logout               ANY    /demo/secured/logout
+ ...
+ _configurator_final        ANY    /_configurator/final
+ acme_example_default_index ANY    /example/hello/{name}
+
+-- [black]
+Supporting other output formats
+
+ /**
+  * @Route("/hello/{name}.{_format}", defaults={"_format"="html"})
+  */
+
+http://localhost:8001/hello/World <b>and</b>
+http://localhost:8001/hello/World.html
+will both work
+
+-- [black]
+src/Acme/ExampleBundle/Resources/views/Default/index.json.twig
+
+ {% set arr = { 'name': name } %}
+ {{ arr | json_encode | raw }}
+
+-- [sf2-example-json.png] [fit] [bottom]
+http://localhost:8001/hello/World.json
+
+--
+Using Midgard inside Symfony2
+
+-- [black]
+Add Midgard ConnectionBundle as dependency
+
+[MidgardConnectionBundle]
+    git=git://github.com/bergie/MidgardConnectionBundle.git
+    target=Midgard/ConnectionBundle
+
+Install with <i>$ php bin/vendors install</i>
+
+Enable in <i>app/AppKernel.php</i>
+
+ $bundles = array(
+     ...
+     new Midgard\\ConnectionBundle\\MidgardConnectionBundle()
+ );
+
+-- [black]
+Configure Midgard connection
+
+app/config/config.yml
+
+ midgard_connection:
+     type: SQLite
+     name: midgard2
+     databasedir: "%kernel.root_dir%"
+     logfile: "%kernel.root_dir%/logs/midgard2.log"
+     loglevel: debug
+     blobdir: "%kernel.root_dir%/blobs"
+     sharedir: "/usr/share/midgard2"
+
+-- 
+Now you can create a database
+
+<i>$ php app/console midgard:connection:init</i>
+
+-- [black]
+Using Midgard in controllers
+
+src/Acme/ExampleBundle/Controller/DefaultController.php
+
+ /**
+  * @Route("/hello/{name}.{_format}", defaults={"_format"="html"})
+  * @Template()
+  */
+ public function indexAction($name)
+ {
+     $qb = new \\midgard_query_builder('midgard_person');
+     $qb->add_constraint('firstname', '=', 'Midgard');
+     $persons = $qb->execute();
+     return array('name' => $persons[0]->firstname);
+ }
+
+-- [sf2-example-midgard.png] [fit] [bottom]
+Hello, Midgard!
+
+-- [black] [no-markup]
+Application Kernel
+
+  <?php
+  require __DIR__ '/../app/AppKernel.php';
+  // Instantiate kernel in production mode
+  $kernel = new AppKernel('prod', false);
+  // Run the request
+  $kernel->run();
+
+-- [black]
+Photos:
+http://www.flickr.com/photos/jeremyhiebert/5105804864/
+http://www.flickr.com/photos/donkeyhotey/5527263186/
+
+Inspiration:
+http://www.slideshare.net/weaverryan/handson-with-the-symfony2-framework

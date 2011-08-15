@@ -486,6 +486,13 @@ NetNehmerBlog:
 -- [sf2-midcom-unstyled.png] [bottom]
 http://localhost:8001/blog/
 
+--
+Some areas to follow:
+
+• Symfony CMF: node-based routing, etc
+• PHPCR: standard content repository APIs
+• MidCOM and Midgard MVC compat work
+
 -- [black]
 Photos:
 http://www.flickr.com/photos/bfs_man/4939624151/

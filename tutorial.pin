@@ -4,7 +4,7 @@
 [jeremyhiebert-okanagan-symphony.jpg]
 [font=Cantarell 50px]
 [duration=10.000000]
---
+-- [bfs_man-houston-symphony.jpg]
 Symfony2 for Midgard Developers
 
 -- [text-align=center]
@@ -81,10 +81,16 @@ The actual service checking this could be
 MidCOM-style ACL, or simple "allow authenticated
 users to do anything" check.
 
---
+-- [eustaquio-singapore-symphony.jpg]
 PHP 5.3 and namespaces
 
 -- [black] [no-markup]
+Midgard MVC & MidCOM
+
+  <?php
+  class example_mycomponent_controllers_some
+  {
+
 Symfony2
 
   <?php
@@ -93,11 +99,6 @@ Symfony2
   class SomeController extends Controller
   {
 
-Midgard MVC & MidCOM
-
-  <?php
-  class example_mycomponent_controllers_some
-  {
 -- [black]
 \\ is the new _
 -- [psr-0.png] [fit]
@@ -118,7 +119,7 @@ With namespaces all projects can share one autoloader.
   $phpcrAutoloader = new SplClassLoader('PHPCR', "{$crRoot}/lib/PHPCR/src");
   $phpcrAutoloader->register();
 
---
+-- [hatwar-india-symphony.jpg]
 Time to get the hands dirty
 
 --
@@ -127,7 +128,7 @@ Symfony2 Standard Edition
 
 http://symfony.com/download
 
--- [sf2-standard-edition-unpacked.png]
+-- [sf2-standard-edition-unpacked.png] [fit]
 
 -- [black] [font=monospace]
  $ php app/check.php 
@@ -169,7 +170,7 @@ Add AiP integration as dependency
      target=Midgard/AppServerBundle
 
 Install with <i>$ php bin/vendors install --reinstall</i>
---
+-- [black]
 Copy <i>aip.yaml.example</i> from
 <i>vendor/Midgard/AppServerBundle</i>
 to the <i>app</i> dir as <i>aip.yaml</i>
@@ -183,7 +184,7 @@ Add Midgard namespace to autoloader
 Start AiP <i>aip app app/aip.yaml</i>
 Go to <i>http://localhost:8001</i>
 
--- 
+-- [black]
 Now, to write some code!
 
  $ php app/console generate:bundle
@@ -238,7 +239,7 @@ We could also do:
      array('name' => $name)
  );
 
---
+-- [black]
 Page generation process:
 
 1. Match the URL to a route (/hello/{name})
@@ -250,7 +251,7 @@ Page generation process:
 3. Controller returns a Response
     Hello World!
 
---
+-- [jordanfischer-chicago-symphony.jpg]
 Templating in Symfony2
 
 -- [sf2-twig.png] [fit] [bottom]
@@ -284,7 +285,7 @@ TAL, PHP, MidCOM, ...
 
 http://symfony.com/doc/2.0/cookbook/templating/PHP.html
 
---
+-- [bellatrix6-florida-symphony.jpg]
 Routing in Symfony2
 
 -- [black]
@@ -382,7 +383,7 @@ app/config/config.yml
      blobdir: "%kernel.root_dir%/blobs"
      sharedir: "/usr/share/midgard2"
 
--- 
+-- [black]
 Now you can create a database
 
 <i>$ php app/console midgard:connection:init</i>
@@ -419,8 +420,13 @@ Application Kernel
 
 -- [black]
 Photos:
+http://www.flickr.com/photos/bfs_man/4939624151/
 http://www.flickr.com/photos/jeremyhiebert/5105804864/
 http://www.flickr.com/photos/donkeyhotey/5527263186/
+http://www.flickr.com/photos/eustaquio/2750429774/
+http://www.flickr.com/photos/hatwar/5022365448/
+http://www.flickr.com/photos/jordanfischer/72510316/
+http://www.flickr.com/photos/bellatrix6/130907944/
 
 Inspiration:
 http://www.slideshare.net/weaverryan/handson-with-the-symfony2-framework

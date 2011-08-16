@@ -3,7 +3,6 @@
 [fill]
 [jeremyhiebert-okanagan-symphony.jpg]
 [font=Cantarell 50px]
-[duration=10.000000]
 -- [bfs_man-houston-symphony.jpg]
 Symfony2 for Midgard Developers
 -- [text-align=center]
@@ -472,7 +471,7 @@ Enable component in <i>app/AppKernel.php</i>
 
  $bundles = array(
      ...
-     new Midgard\MidcomCompatBundle\Bundle\ComponentBundle(
+     new Midgard\\MidcomCompatBundle\\Bundle\\ComponentBundle(
         'net.nehmer.blog')
  );
 
@@ -485,6 +484,14 @@ NetNehmerBlog:
 
 -- [sf2-midcom-unstyled.png] [bottom]
 http://localhost:8001/blog/
+
+-- [black]
+Loading a layout for your MidCOM views
+
+app/config/config.yml
+
+ midgard_midcom_compat:
+    layout: "MidgardMidcomCompatBundle::layout.html.twig"
 
 --
 Some areas to follow:
